@@ -51,7 +51,7 @@ const WeatherApp = () => {
 
             const fetchWeather = async () => {
                 const apiKey = 'ec23531ff278475e9db221201241207';
-                const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
+                const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
                 try {
                     const response = await axios.get(url);
                     if (response.status === 200) {
