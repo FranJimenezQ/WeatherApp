@@ -4,7 +4,15 @@ import axios from "axios";
 const WeatherApp = () => {
 
     const [city, SetCity] = useState('');
+    const [country, SetCountry] = useState('');
+    const [state, SetState] = useState('');
+
     const [weatherInfo, SetWeatherInfo] = useState('Type a city');
+    const [icon, SetIcon] = useState('');
+    const [maximumWindSpeed, SetMaximumWindSpeed] = useState('');
+    const [imgOn, SetImgOn] = useState('');
+
+
     const inputRef = useRef(null);
 
     
@@ -16,12 +24,16 @@ const WeatherApp = () => {
               autocomplete.addListener('place_changed', () => {
                 const place = autocomplete.getPlace();
                 if (place && place.address_components) {
-                  SetCity(place.name);
+                    console.log(place);
+                    console.log(place.geometry.location.lat);
+                    
+                  SetCity(place.name);                  
                 }
               });
             }
           };
-      
+          console.log(city);
+
           if (window.google && window.google.maps) {
             initAutocomplete();
           } else {
@@ -31,6 +43,7 @@ const WeatherApp = () => {
           return () => {
             window.removeEventListener('load', initAutocomplete);
           };
+          
     }, []);
 
     useEffect(()=>{
@@ -43,10 +56,15 @@ const WeatherApp = () => {
                     const response = await axios.get(url);
                     if (response.status === 200) {
                         const data = response.data;
+                        SetImgOn(true);
                         console.log(data);
                         
                         if (data && data.current && data.current.condition) {
                             SetWeatherInfo(`${data.current.condition.text}, ${data.current.temp_c}°C`);
+                            SetIcon(`${data.current.condition.icon}`)
+                            SetCountry(`Country: ${data.location.country}`)
+                            SetState(`State: ${data.location.region}`)
+                            SetMaximumWindSpeed(`Wind Speed: ${data.current.wind_mph}kph`)
                         }else{
                             SetWeatherInfo('Data incomplete');
                         }
@@ -66,7 +84,7 @@ const WeatherApp = () => {
         <div className="container">
 
             <div className="content" style={{display:'flex', flexDirection:'column', alignItems:'center', minHeight:'85vh'}}>
-                <h1>WeatherApp</h1>
+                <h1>Flakundo WeatherApp</h1>
                 <input
                     type="text"
                     placeholder="Type the city name"
@@ -75,7 +93,14 @@ const WeatherApp = () => {
                     style={{padding:'10px', fontSize:'16px', width:'300px'}}
                 >
                 </input>
+                {imgOn === true &&
+                (<img src={icon} alt="Weather data icon" border="0"></img>)
+                }
                 <p>{weatherInfo}</p>
+                <p>{maximumWindSpeed}</p>
+               
+                <span>{country}</span>
+                <span>{state}</span>
             </div>
         </div>
 
