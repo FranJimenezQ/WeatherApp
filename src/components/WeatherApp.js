@@ -24,16 +24,11 @@ const WeatherApp = () => {
               autocomplete.addListener('place_changed', () => {
                 const place = autocomplete.getPlace();
                 if (place && place.address_components) {
-                    console.log(place);
-                    console.log(place.geometry.location.lat);
-                    
                   SetCity(place.name);                  
                 }
               });
             }
           };
-          console.log(city);
-
           if (window.google && window.google.maps) {
             initAutocomplete();
           } else {
