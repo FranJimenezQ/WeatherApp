@@ -51,9 +51,7 @@ const WeatherApp = () => {
                     const response = await axios.get(url);
                     if (response.status === 200) {
                         const data = response.data;
-                        SetImgOn(true);
-                        console.log(data);
-                        
+                        SetImgOn(true);                        
                         if (data && data.current && data.current.condition) {
                             SetWeatherInfo(`${data.current.condition.text}, ${data.current.temp_c}°C`);
                             SetIcon(`${data.current.condition.icon}`)
